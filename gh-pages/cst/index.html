@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+<title>Client-Side Templating with Mustache {{}}</title>
+<link media="screen" rel="stylesheet" type="text/css" href="css/reset.css" />
+<link media="screen" rel="stylesheet" type="text/css" href="css/grid960.css" />
+<link media="screen" rel="stylesheet" type="text/css" href="css/default.css" />
+<link media="screen" rel="stylesheet" type="text/css" href="css/ui-lightness/jquery-ui-1.8.12.custom.css"  />   
+<link media="screen" rel="Stylesheet" type="text/css" href="css/button.css" />
+
+<style type="text/css" media="screen">
+
+#header {
+    height: 60px;
+    padding:20px;
+    border: 1px solid #E78F08;
+    background: #F6A828;
+    color: white;
+    font-weight: bold;
+}
+#wrapper {
+  padding-top: 20px;
+}
+
+#content {
+    margin:auto;
+    background-color:white;
+    border:2px;
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+}
+
+#dynamic {
+    margin:22px;
+    border: 1px;
+    border-style: dashed;
+    border-color:gray;
+    padding-left: 30px;
+    padding-top: 30px;
+    height: 475px;    
+}
+
+#tabs {
+    margin: 20px;
+    height: 500px;
+}
+.box textarea {
+    width: 100%;
+    height: 420px;
+    font-family: monospace;
+}
+
+#feedback {
+    margin:20px;
+}
+
+#feedback .ui-state-error {
+    display: none;
+}
+
+</style>
+
+<script type="text/javascript" src="js/mustache.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://github.com/douglascrockford/JSON-js/raw/8e0b15cb492f63067a88ad786e4d5fc0fa89a241/json2.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.8.12.custom.min.js"></script>
+<script type="text/javascript" src="js/controller.js"></script>
+<script type="text/javascript">
+  $(function(){
+    // Tabs
+    $('#tabs').tabs();
+  });
+</script>
+
+
+</head>
+<body>
+  <a href="http://github.com/pdeschen/sandbox"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+  <div id="header">
+    <h1>Sandbox</h1>
+    <h2>Client-Side Templating with Mustache {{}}</h2>
+  </div>
+  <div id="wrapper"> 
+    <div id="content" class="container_16" >
+      <div class="grid_16">
+        <div id="feedback">
+            <div class="ui-state-error ui-corner-all"> 
+                <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+                <strong>Alert:</strong> <span id="errorMessage">Sample ui-state-error style.</span></p>
+            </div>
+        </div>
+      </div>
+      <div class="grid_8 alpha">
+        <p>
+        Client-side templating showcase to support my associated blog post. While this is far from being complete, feel free fork. 
+        This is part of my web sandbox, experimenting with new concepts.
+        </p>
+      </div>
+      <div class="grid_8 omega">
+        
+        <h3>How it Works</h3>
+        <ol>
+          <li>Both json <a href="model/test.json">model</a> and mustache template <a href="views/test.mustache">view</a> are fetched off the server.</li>
+          <li>Mustache engine renders the view into HTML.</li>
+          <li>HTML is dynamically replaced into <em>div</em> container below.</li>
+        </ol>
+        <h4>Hints</h4>
+        <p>You may edit both view and model to your liking and hit the Apply button to get a new rendering.</p>
+      </div>
+      <div class="grid_8 alpha code">
+          <div id="dynamic">
+          </div>
+      </div>
+      
+      <div class="grid_8 omega">
+        <div id="tabs">
+            <ul>
+                <li><a href="#tabs-1">View</a></li>
+                <li><a href="#tabs-2">Model</a></li>
+                <li><a href="#tabs-3">HTML</a></li>                
+            </ul>
+            <div id="tabs-1">
+              <div class="box">
+                  <textarea id="view"></textarea>
+              </div>
+            </div>
+            <div id="tabs-2">
+                <div class="box">
+                    <textarea id="model"></textarea>
+                </div>
+            </div>
+            <div id="tabs-3">
+                <div class="box">
+                    <textarea id="raw"></textarea>
+                </div>
+            </div>
+        </div>
+      </div>
+      <div class="grid_13">
+        <p></p>
+      </div>      
+      <div class="grid_3 omega">
+          <p style="margin-bottom:10px;margin-left:20px;">
+              <a id="cta" class="button blue large" href="#" rel="nofollow"><span>Apply</span></a>
+          </p>
+      </div>
+    </div>
+  </div>
+  <div class="footer"></div>
+
+</body>
+</html>
