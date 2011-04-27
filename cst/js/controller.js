@@ -31,6 +31,7 @@ $(document).ready(function() {
 
 	$.ajax( {
 		url : 'model/test.json',
+		dataType : 'json',
 		error : function() {
 			onError('Problem while fetching remote model.');
 		},
