@@ -12,14 +12,14 @@ exports.all = {
 
 exports.serve = {
 	depends : [],
-	task : function($cm) {
-		$cm.plugins.serve.http(process.cwd() + "/" + resources.web.root, 8080);
+	task : function() {
+		this.plugins.serve.http(process.cwd() + "/" + resources.web.root, 8080);
 	}
 };
 
 exports.render  = {
-	task: function($cm) {
-		$cm.print("test");
+	task: function() {
+		this.print("test");
 	
 		var mustache = require('mustache');
 		var sys = require('sys');
@@ -35,7 +35,7 @@ exports.render  = {
 	
 		var html = mustache.to_html(template, view);
 		
-		$cm.print(html);	
+		this.print(html);	
 	}
 };
 
