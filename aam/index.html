@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<title>Ajax HTTP Basic Authentication Mechanism</title>
+<link media="screen" rel="stylesheet" type="text/css" href="/css/reset.css" />
+<link media="screen" rel="stylesheet" type="text/css" href="/css/grid960.css" />
+<link media="screen" rel="stylesheet" type="text/css" href="/css/default.css" />
+<link media="screen" rel="stylesheet" type="text/css" href="/css/ui-lightness/jquery-ui-1.8.12.custom.css"  />   
+<link media="screen" rel="Stylesheet" type="text/css" href="/css/button.css" />
+
+<link rel="stylesheet" id="login-css" href="/css/login.css" type="text/css" media="all">
+<link rel="stylesheet" id="colors-fresh-css" href="/css/colors-fresh.css" type="text/css" media="all">
+
+
+<style type="text/css" media="screen">
+
+#header {
+    height: 60px;
+    padding:20px;
+    border: 1px solid #E78F08;
+    background: #F6A828;
+    color: white;
+    font-weight: bold;
+}
+#wrapper {
+  padding-top: 20px;
+}
+
+#content {
+    margin:auto;
+    background-color:white;
+    border:2px;
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+    -moz-box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+    -webkit-box-shadow: 0px 3px 3px rgba(0,0,0,0.2);
+}
+
+#dynamic {
+    margin: 0px;
+    border: 1px;
+    border-style: dashed;
+    border-color:gray;
+    padding-left: 30px;
+    padding-top: 30px;
+    height: 320px;    
+}
+
+#container {
+    height: 400;
+}
+
+#tabs {
+    margin: 20px;
+    height: 500px;
+}
+.box textarea {
+    width: 100%;
+    height: 420px;
+    font-family: monospace;
+}
+
+#feedback {
+    margin:20px;
+}
+
+#feedback .ui-state-error {
+    display: none;
+}
+
+.footer {
+    height: 100px;
+}
+
+</style>
+
+<script type="text/javascript" src="http://crypto-js.googlecode.com/files/2.2.0-crypto-min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://github.com/douglascrockford/JSON-js/raw/8e0b15cb492f63067a88ad786e4d5fc0fa89a241/json2.js"></script>
+<script type="text/javascript" src="/js/mustache.js"></script>
+<script type="text/javascript" src="/js/jquery-ui-1.8.12.custom.min.js"></script>
+<script type="text/javascript" src="/js/jquery.cookie.js"></script>
+<script type="text/javascript" src="/js/controller.js"></script>
+<script type="text/javascript">
+
+
+</script>
+
+
+</head>
+<body>
+  <a href="http://github.com/pdeschen/sandbox"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+  <div id="header">
+    <h1>Sandbox</h1>
+    <h2>Ajax HTTP Basic Authentication Mechanism</h2>
+  </div>
+  <div id="wrapper"> 
+    <div id="content" class="container_16" >
+      <div class="grid_16">
+        <div id="feedback">
+            <div class="ui-state-error ui-corner-all"> 
+                <p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span> 
+                <strong>Alert:</strong> <span id="errorMessage">Sample ui-state-error style.</span></p>
+            </div>
+        </div>
+      </div>
+      <div class="grid_16 alpha">
+        <p>
+            This is a simple proof of concept for ajax request authentication base with HTTP basic scheme. 
+        </p>
+      </div>
+      <div class="grid_16 omega">        
+        <h3>How it Works</h3>
+        <ol>
+          <li>Ajax request is sent over a reverse proxy server (nginx) which performs the actual http basic authentication.</li>
+          <li>Prior sending the request, username/password credentials are first base64 encoded and Authorization header is added to the request.</li>
+          <li>Proxy either grant or denied access.</li>          
+          <li>For denied access, instead of sending back a 401, a 403 is sent, which can be handle within jquery error callback.</li>
+        </ol>
+        <h4>Hints</h4>
+        <ol>
+          <li>Username/password = foobar/barfoo</li>
+          <li>403 is returned in place of a 401 because a 401 status is handled directly by the browser (dialog popup).</li>
+          <li>Authorization header is hand crafted because otherwise jquery (xhr) seems to perform a preflight request.</li>
+        </ol>
+      </div>
+      <div class="grid_16" style="margin:20px">&nbsp;</div>
+      <div class="grid_12 alpha" id="container">
+          <form id="loginform" id="login" action="#" method="post">
+            <p>
+                <label>Username<br>
+                <input type="text" name="log" id="user_login" class="input" value="" size="20" tabindex="10"></label>
+            </p>
+            <p>
+                <label>Password<br>
+                <input type="password" name="pwd" id="user_pass" class="input" value="" size="20" tabindex="20"></label>
+            </p>
+            <p class="forgetmenot"><label><input name="rememberme" type="checkbox" id="rememberme" value="forever" tabindex="100">Forget me not!</label></p>
+            
+            <p style="position:relative;z-index:100;right:15px;top:-30px;float:right;">
+                <a id="cta" class="button blue large" href="#" rel="nofollow"><span>Login</span></a>
+            </p>
+        
+<!--            <p class="submit">-->
+<!--                <input type="submit" name="wp-submit" id="wp-submit" class="button-primary" value="Continue" tabindex="110">-->
+<!--                <input type="hidden" name="redirect_to" value="#">-->
+<!--                <input type="hidden" name="testcookie" value="1">-->
+<!--            </p>-->
+          </form>
+      </div>      
+      <div class="grid_4 omega">
+        <div class="code" id="dynamic">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer">
+    <p>&nbsp;</p>
+  </div>
+
+</body>
+</html>
